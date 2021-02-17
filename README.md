@@ -9,3 +9,5 @@ The project will likely take the form of a Python script that can be called to a
 
 
 ## Technical Limitations
+* In the python3-prototype it doesn't take memory into consideration when calculating the hash of the file. Thus this can use a lot of memory when working with larger files.
+    * [This stackoverflow offers a solution to the problem](https://stackoverflow.com/questions/22058048/hashing-a-file-in-python)
