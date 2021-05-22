@@ -1,20 +1,41 @@
 # Native imports
 import sys
 import hashlib
-
+import sqlite3
 # 3rd Party Imports (pip3 install {import} )
 import ssdeep
 
 """
 This file is meant to be a prototype to make prior to (Spade) translating it into C++
-
 """
+
+HASHES_DB = "hashes.db" 
 
 # prints how to use this script
 def usage():
     use = f"python3 demo-signatureBasedIDS.py (file)"
     print(f"Usage: ")
     print(use)
+
+# Initalize the DB by DB NAME
+def initDB(dbName):
+    with sqlite3.connect(f"{HASHES_DB}") as conn:
+        cur = conn.cursor()
+
+        cur.execute('''Create Table md5_hashes
+        (ID INTEGER PRIMARY KEY,
+        MD5 varchar(32) NOT NULL);
+        ''')
+
+        conn.commit()
+
+# Insert to md5 hashes database
+def insertToDB(hash_str):
+    with sqlite3.connect(f"{HASHES_DB}") as conn:
+        cur = conn.cursor() 
+
+        cur.execute(f"INSERT INTO md5_hashes values {hash_str!r}")
+        conn.commit()
 
 
 # Creates a bogus registory of malicious md5 hashs
