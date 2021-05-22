@@ -6,7 +6,7 @@ The purpose of this project is to creat a signature-based intrusion-detection-sy
 The project will likely take the form of a Python script that can be called to analyze any offending file/executable and compare its signature against a known list of malware signatures.
 
 ## Technical Details
-
+This follows a simple process. First the application will generate an MD5 hash on the specified target file. Then, the hash is checked against a list of known hashes. If it is found in the list, VirusTotal is consulted for further details on the piece of malware. As of now, only the MD5 hash is used.
 
 ## Technical Limitations
 * In the python3-prototype it doesn't take memory into consideration when calculating the hash of the file. Thus this can use a lot of memory when working with larger files.
