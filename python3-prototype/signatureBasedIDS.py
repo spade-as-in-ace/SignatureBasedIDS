@@ -5,10 +5,6 @@ import sqlite3
 # 3rd Party Imports (pip3 install {import} )
 import ssdeep
 
-"""
-This file is meant to be a prototype to make prior to (Spade) translating it into C++
-"""
-
 HASHES_DB = "hashes.db" 
 
 # prints how to use this script
@@ -41,7 +37,7 @@ def insertToDB(hash_str):
 # Creates a bogus registory of malicious md5 hashs
 def get_repository():
     # populated a set of md5 hashes of "malicious files"
-    return {"d5570e17ad969b17a817936ae4381bee","e599eb9a0140ce7a5efc2859520a5b03"}
+    return {"d5570e17ad969b17a817936ae4381bee", "e599eb9a0140ce7a5efc2859520a5b03"}
 
 
 # get hash of file (natively python3)
@@ -50,7 +46,11 @@ def file_hash(file):
     sha1_hash = hashlib.sha1(file)
     sha256_hash = hashlib.sha256(file)
 
-    md5, sha1, sha256 = md5_hash.hexdigest(), sha1_hash.hexdigest(), sha256_hash.hexdigest()
+    md5, sha1, sha256 = (
+        md5_hash.hexdigest(),
+        sha1_hash.hexdigest(),
+        sha256_hash.hexdigest(),
+    )
     # print(f"md5: {md5}\nsha1: {sha1}\nsha256: {sha256}")
     return md5, sha1, sha256
 
@@ -65,11 +65,11 @@ def main(filename):
     hash = {}
 
     # open the file in read bytes mode and calculate the hash of the file
-    with open(filename, 'rb') as f:
+    with open(filename, "rb") as f:
         md5, sha1, sha256 = file_hash(f.read())
-        hash['md5'] = md5
-        hash['sha1'] = sha1
-        hash['sha256'] = sha256
+        hash["md5"] = md5
+        hash["sha1"] = sha1
+        hash["sha256"] = sha256
 
     print(hash)
     print(f"ssdeep from {filename} = {fuzzy_hash(filename)}")
