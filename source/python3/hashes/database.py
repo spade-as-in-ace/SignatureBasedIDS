@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# TODO make class
-
 import sqlite3
 
+# TODO make class
 """
 class Database:
     def __init(self, name):
         self.name = name
 """
 
-HASHES_DB = "hashes.db"
 
-
-def create_db():
+def create_db(HASHES_DB=".hashes.db"):
     """create a db for hashes"""
     conn = None
     try:
@@ -41,17 +38,27 @@ def create_db():
         conn.commit()
 
 
-def insert_hash(hash_str, hash_type="md5", num=1):
+def insert_hash(hash_str, hash_type="md5", num=1, HASHES_DB=".hashes.db"):
     """insert hash into db"""
     try:
         with sqlite3.connect(f"{HASHES_DB}") as conn:
-            cur = conn.cursor()
+            c = conn.cursor()
             if num != 1:
                 hash_str = hash_str.replace("'", "('").replace("(',", "'),")
                 hash_str = hash_str[:-2] + "');"
-                cur.execute(f"INSERT INTO hashes ({hash_type}) VALUES " + hash_str)
+                c.execute(f"INSERT INTO hashes ({hash_type}) VALUES " + hash_str)
             else:
-                cur.execute(f"INSERT INTO hashes ({hash_type}) VALUES ('{hash_str}');")
+                c.execute(f"INSERT INTO hashes ({hash_type}) VALUES ('{hash_str}');")
             conn.commit()
+    except sqlite3.Error as e:
+        print(e)
+
+
+def check_hash(hash_str, HASHES_DB=".hashes.db"):
+    try:
+        with sqlite3.connect(f"{HASHES_DB}") as conn:
+            c = conn.cursor()
+            c.execute(f"SELECT * FROM hashes WHERE `md5` = '{hash_str}'")
+            return c.fetchall()
     except sqlite3.Error as e:
         print(e)
