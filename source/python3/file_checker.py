@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import hashlib
 import sys
 import webbrowser as web
@@ -37,9 +39,10 @@ def fuzzy_hash(filename):
 
 def check_file(filename):
     md5 = hash_file(filename)
-    print(f"File Hash: {md5}")
+    # print(f"File Hash: {md5}")
     result = db.check_hash(md5, HASHES_DB=DATABASE_PATH)
     if len(result) > 0:
+        print(filename)
         print(result)
         print("File is malware")
         web.open(VIRUSTOTAL_URL + md5)
